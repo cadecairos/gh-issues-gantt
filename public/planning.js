@@ -341,7 +341,7 @@ var Planning = {
       });
 
       // Index milestones by id & add milestone issues
-      milestones.forEach(function(ghAttributes) {
+      window.milestones.forEach(function(ghAttributes) {
          if(config.excludedMilestones.indexOf(ghAttributes.title) == -1 && !!ghAttributes.due_on) {
             new Milestone(ghAttributes);
          }
@@ -352,7 +352,7 @@ var Planning = {
 
 
       // Dispatch issues in milestones
-      issues.forEach(function(ghAttributes) {
+      window.issues.forEach(function(ghAttributes) {
          if(!ghAttributes.milestone) {
             $('#msg').append("<p><a href='https://github.com/"+config.repo+"/issues/"+ghAttributes.number+"' target='new'>issue #"+ghAttributes.number+"</a> has no milestone !</p>");
             return;
