@@ -71,7 +71,7 @@ Remember to add a comma at the end of the line. (Page will not load charts if th
 
     npm start
 
-Open http://localhost:3001
+Open http://localhost:8080
 
 /!\ The issues are downloaded ONLY the first time you access the page.
 
