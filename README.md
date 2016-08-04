@@ -1,4 +1,4 @@
-# Github issues Gantt
+# Github issues Gantt for Mozilla Advocacy
 
 
 ![Gantt Diagram](screenshot.png?raw=true "GitHub Issues Gantt")
@@ -11,16 +11,21 @@ Requires Node.js
 * Clone the git repository, and install dependencies
 
 ````sh
-$ git clone git://github.com/neyric/gh-issues-gantt.git
-$ cd gh-issues-gantt
+$ git clone git://github.com/mozilla/mozilla-advocacy-gantt.git
+$ cd mozilla-advocacy-gantt
 $ npm install
 ````
 
 ## Configuration
 
-* copy config.example.js to config.js, and set the repo GitHub credentials
+* Server Environment Config
+    * `GITHUB_OAUTH_TOKEN`: Oauth Token with public repo access. https://github.com/settings/tokens
+    * `GITHUB_REPO`: The repo to fetch issue and milestone data from
+    * `GITHUB_USER`: The GitHub user/org that owns the repo
+    * `PORT`: The port number that the server should listen for connections on 
 
-* copy public/config.example.js to public/config.js, and edit the options
+* Client Side
+    * modify public/config.js as required
 
 ## Custom colors per developer
 
@@ -83,4 +88,5 @@ Open http://localhost:3001
 
 ## Credits
 
+ * @neyric: https://github.com/neyric/gh-issues-gantt
  * Jquery Gantt widget: http://taitems.github.com/jQuery.Gantt/
