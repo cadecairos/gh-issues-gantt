@@ -18,6 +18,8 @@ $ npm install
 
 ## Configuration
 
+Copy sample.env to .env - `cp sample.env .env` and edit it to set your dev environment
+
 * Server Environment Config
     * `GITHUB_OAUTH_TOKEN`: Oauth Token with public repo access. https://github.com/settings/tokens
     * `GITHUB_REPO`: The repo to fetch issue and milestone data from
@@ -67,7 +69,7 @@ Remember to add a comma at the end of the line. (Page will not load charts if th
 
 ## Start the server
 
-    node server.js
+    npm start
 
 Open http://localhost:3001
 

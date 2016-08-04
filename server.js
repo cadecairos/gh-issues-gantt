@@ -1,7 +1,10 @@
 const express = require('express');
+const GitHub = require('./github');
+const habitat = require('habitat');
 const app = express();
-const GitHub = require('./github')
 const gh = new GitHub();
+
+habitat.load('.env');
 
 app.use(express.static(__dirname + '/public'));
 
