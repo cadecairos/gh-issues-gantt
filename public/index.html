@@ -4,45 +4,78 @@
 	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <title>Github issues Gantt</title>
 	<meta charset="utf-8">
-    <link rel="stylesheet" href="/lib/jQuery.Gantt/css/style.css">
+    <script src="lib/d3.v3.min.js"></script>
+	<link rel="stylesheet" href="/stylesheets/normalize.css">
+	<link rel="stylesheet" href="/stylesheets/foundation.min.css">
     <link rel="stylesheet" href="/stylesheets/style.css">
 </head>
 <body>
 
-		<div class="contain">
-			<h1>GitHub issues Gantt</h1>
+	<!-- TITLE BAR -->
+	<header class="large-6 columns hide-for-small-only">
+				<h1>Mozilla Advocacy</h1>
+	</header>
 
 			<div id='msg' class="alert alert-block"></div>
 
       <div id='refresh-button-container'>
         <button id="refresh-button" class='btn'>Refresh</button>
       </div>
-      
-			<h2>By Milestone</h2>
-			<div class="gantt-milestone"></div>
-
-			<h2>By Dev</h2>
-			<div class="gantt-dev"></div>
-
-			<h2>By Milestone</h2>
-			<div class="gantt-milestone-only"></div>
-
+		
+			<hr>
+			<!-- SORTER/FILTER/COLOR BUTTONS -->
+			<div class="button-block large-5 columns">
+				<h6>SORT BY</h6>
+				<ul id="sorter" class="button-group radius">
+					<li class="hollow secondary button tiny" data-sorter="title">Issue</li>
+					<li class="hollow secondary button tiny" data-sorter="created_at">Start date</li>
+					<li class="hollow secondary button tiny" data-sorter="due_on">Due date</li>
+					<li class="hollow secondary button tiny" data-sorter="team">Team</li>
+				</ul>
+			</div>
+			<div class="button-block large-9 columns">
+				<h6>FILTER BY</h6>
+				<select id="filter">
+					<option id="filter" selected>All</option>
+					<option id="filter">KevZawacki</option>
+					<option id="filter">valianttry</option>
+					<option id="filter">damiankay</option>
+					<option id="filter">cadecairos</option>
+					<option id="filter">brettgaylor</option>
+					<option id="filter">lovegushwa</option>
+				</select>
+			</div>
+			
+		<hr>
 		</div>
+		<div class="row">
+			<div class="large-12 columns">
+				<div id="chart-canvas" style="position:relative">
+					<div id="svg-canvas"></div>
+					<div id="gantt-bar-container"></div>
+				</div>
+
+				<!-- TOOLTIPS -->
+				<div id="tooltip"></div>
+
+			</div>
+		</div>
+
     
 	<script src="/lib/jquery-1.10.2.min.js"></script>
-	<script src="/lib/jQuery.Gantt/js/jquery.fn.gantt.min.js"></script>
+	<!--<script src="/lib/jQuery.Gantt/js/jquery.fn.gantt.min.js"></script>-->
 
 	<!-- From server -->
 	<script src="/config.js"></script>
 	<script src="/date-functions.js"></script>
-	<script src="/planning.js"></script>
+	<script src="/main.js"></script>
 	<script>
 		$(function() {
 			"use strict";
 			$.getJSON("/data.json", function(data) {
 				window.issues = data.issues;
 				window.milestones = data.milestones;
-				Planning.init();
+				visualize();
 			});
 		});	
 	</script>
