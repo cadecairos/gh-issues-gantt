@@ -1,0 +1,32 @@
+{
+  "name": "mozilla-advocacy-gantt",
+  "scripts": {
+  },
+  "env": {
+    "GITHUB_OAUTH_TOKEN": {
+      "required": true
+    },
+    "GITHUB_REPO": {
+      "required": true
+    },
+    "GITHUB_USER": {
+      "required": true
+    },
+    "PORT": {
+      "required": true
+    }
+  },
+  "formation": {
+    "web": {
+      "quantity": 1
+    }
+  },
+  "addons": [
+
+  ],
+  "buildpacks": [
+    {
+      "url": "heroku/nodejs"
+    }
+  ]
+}
