@@ -10,7 +10,7 @@
 		.rangeRound([125, canvas_width]);
 
 
-	var data = [],milestones = [];
+	var data = [];
 
 	var number_of_bars, canvas_height;
 
@@ -65,7 +65,11 @@
 				data.push(object);
 			}
 		})
-		console.log(data);
+
+		milestones.forEach(function(d,i) {
+			d3.select("#milestone").append('option').html(d.title);
+		})
+
 		data.sort(function(a,b) {
 			return a.due_on - b.due_on;
 		})
@@ -130,16 +134,6 @@
 			.attr('y2', canvas_height - 25)
 			.style('stroke', '#c00');
 
-			/*milestones.forEach(function(milestone){
-				var _milestones = svg.append('line')
-			 	.datum(milestone)
-				.attr('x1', xScale(milestone))
-				.attr('x2', xScale(milestone))
-				.attr('y1', - 20)
-				.attr('y2', canvas_height - 25)
-				.style('stroke', '#666');
-			});*/
-
 		d3.select('#chart-canvas').style('height', canvas_height + 'px');
 
 
@@ -162,17 +156,6 @@
 			.style('top', '-68px')
 			.style('left', function(d) { return (xScale(d) -1) + 'px' });
 
-		/*milestones.forEach(function(milestone){
-			ganttBarContainer.append('div')
-			.datum(milestone)
-			.text(function(d) { return titleFormat(milestone)})
-			.attr('class', 'milestone')
-			.style('position', 'absolute')
-			.style('top', '-45px')
-			.style('left', function(d) { return xScale(milestone) + 'px'})
-
-		})*/
-
 	}
 
 	var tooltip = d3.select('#tooltip');
@@ -182,7 +165,11 @@
 		var filteredData = data;
 
 		if (filter_selector) {
-			filteredData = data.filter(function(d) { return d.assignee == filter_selector});
+			if (filter_selector[1] == "All") {
+				filteredData = data.filter(function(d) { return d});
+			} else {
+				filteredData = data.filter(function(d) { return d[filter_selector[0]] == filter_selector[1]});	
+			}
 		}
 
  		var barWrappers = ganttBarContainer.selectAll('.bar-wrapper')
@@ -273,10 +260,13 @@
 	});
 
 	// FILTER BUTTONS
-	d3.selectAll('#filter').on('change', function() {
-		console.log("test");
-		filter_selector = d3.select(this).node().value;
+	d3.selectAll('.filter').on('change', function() {
+		filter_selector = [];
+		filter_selector.push(d3.select(this).attr('id'));
+		filter_selector.push(d3.select(this).node().value);
+		console.log(filter_selector);
 		render();
+
 	});
 
 	// COLOR BUTTONS
