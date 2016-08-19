@@ -59,9 +59,16 @@
 				}
 				object.due_on = dateFormat.parse(d.milestone.due_on);
 				object.milestone = d.milestone.title;
-				if (d.labels.title = "P1") {
-					object.priority = "P1"
+				if (d.labels) {
+					d.labels.forEach(function(d,i) {
+						if (d.name == "P1") {
+							object.priority = "P1";
+						} else if (d.name == "P2") {
+							object.priority = "P2";
+						}
+					})
 				}
+				
 				data.push(object);
 			}
 		})
@@ -221,7 +228,7 @@
 		barWrappers
 			.transition()
 			.duration(600)
-			// .delay(function(d, i) { return i * 15 })
+			.delay(function(d, i) { return i * 15 })
 			.style('display', 'block')
 			.style('opacity', 1)
 			.style('top', function(d, i) {
@@ -260,6 +267,15 @@
 	});
 
 	// FILTER BUTTONS
+	
+	d3.selectAll('.filter li').on('click', function() {
+		filter_selector = [];
+		filter_selector.push('priority');
+		filter_selector.push(d3.select(this).attr('data-filter'));
+		console.log(filter_selector);
+		render();
+
+	});
 	d3.selectAll('.filter').on('change', function() {
 		filter_selector = [];
 		filter_selector.push(d3.select(this).attr('id'));
