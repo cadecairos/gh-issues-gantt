@@ -34,6 +34,7 @@
 	var dateFormat = d3.time.format("%Y-%m-%dT%H:%M:%SZ");
 	var milestonesDateFormat = d3.time.format("%B %d, %Y");
 	var titleFormat = d3.time.format("%B %d");
+	var dueFormat = d3.time.format(" %B %d");
 
 	
 	function visualize() {
@@ -51,13 +52,13 @@
 				var object = [];
 				object.id = i;
 				object.title = d.title;
-				object.created_at = dateFormat.parse(d.created_at);
+
 				if (d.assignee) {
 					object.assignee = d.assignee.login;	
 				} else {
 					object.assignee = "unassigned";
 				}
-				object.due_on = dateFormat.parse(d.milestone.due_on);
+
 				object.milestone = d.milestone.title;
 				if (d.labels) {
 					d.labels.forEach(function(d,i) {
@@ -68,7 +69,32 @@
 						}
 					})
 				}
+				object.url = 'https://github.com/MozillaFoundation/Advocacy/issues/'+d.number;
 				
+				
+				var bda = d.body.split('*').forEach(function(d,i) {
+					var bdaS = d.split(':');
+					bdaS.forEach(function(d,i) {
+						if (d == "Start date") {
+							var start_temp = bdaS[i+1].trim();
+							object.created_at = milestonesDateFormat.parse(start_temp);
+						}
+						if (d == "Due date") {
+							var end_temp = bdaS[i+1].trim();
+							object.due_on = milestonesDateFormat.parse(end_temp);
+						}
+					});			
+					
+				});
+
+				if (object.created_at == null) {
+					object.created_at = dateFormat.parse(d.created_at);					
+				}
+
+				if (object.due_on == null) {
+					object.due_on = dateFormat.parse(d.milestone.due_on);
+				}
+
 				data.push(object);
 			}
 		})
@@ -192,7 +218,8 @@
 				tt += '<p class="indent"><span id="bar-data">' + d.assignee + '</span></p>';
 				//tt += '<p class="indent"><span id="bar-data">' + d.priority + " hours" + '</span></p>';
 				//tt += '<p class="indent"><span id="cpcVal">' + dateFormat(d["created_at"]) + ' - ' + dateFormat(d["milestone"]["due_on"]) + '</span></p>';
-				tt += '<p class="indent"><span id="cpcVal">' + 'Due on: ' + titleFormat(d.due_on) + '</span></p>';
+				tt += '<p class="indent"><span id="cpcVal">' + 'Start date: ' + titleFormat(d.created_at) + '</span></p>';
+				tt += '<p class="indent"><span id="cpcVal">' + 'Due date: ' + titleFormat(d.due_on) + '</span></p>';
 
 				tooltip
 					//.style('border-left', '3px solid ' + teamColorScale(d.team))
@@ -202,6 +229,9 @@
 			})
 			.on('mouseout', function(d, i) {
 				tooltip.style('display', 'none');
+			})
+			.on('click', function(d, i) {
+				window.open(d.url, '_blank');
 			});
 
 		var bars = bwe
@@ -213,7 +243,13 @@
 		bars
 			.append('div')
 				.attr('class', 'bar-name')
-				.text(function(d) { return d.title});
+				.text(function(d) { 
+					if (d.title.length > 50) {
+						return d.title.substring(0,50)+'...';
+					} else {
+						return d.title;
+					}});
+
 
 		barWrappers.selectAll('.bar')
 			.style('background', function(d) {

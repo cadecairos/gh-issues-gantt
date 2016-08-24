@@ -15,6 +15,9 @@
 	<header class="large-6 columns hide-for-small-only">
 				<h1>Mozilla Advocacy</h1>
 	</header>
+      <div id='refresh-button-container'>
+        <button id="refresh-button" class='button hollow'>Refresh</button>
+	</div>
 
 			<div id='msg' class="alert alert-block"></div>
 		
@@ -63,6 +66,27 @@
 				</select>
 
 			</div>
+			<!-- LEGEND - TEAM -->
+		<div id="legend-2" class="legend-style">
+		<div class="legend-title">Team</div>
+			<div class="legend-scale">
+				<ul class="legend-labels">
+					<li class="KevZawacki"><span></span>Kevin</li>
+					<li class="valianttry"><span></span>Andrea</li>
+					<li class="damiankay"><span></span>Damian</li>
+					<li class="cadecairos"><span></span>Chris</li>
+					<li class="shaghdoosti"><span></span>Sara</li>
+					<li class="brettgaylor"><span></span>Brett</li>
+					<li class="lovegushwa"><span></span>Jordan</li>
+					<li class="vojtechmozilla"><span></span>Vojtech</li>
+					<li class="HPaulJohnson"><span></span>Paul</li>
+					<li class="ScottDowne"><span></span>Scott</li>
+					<li class="natalieworth"><span></span>Natalie</li>
+					<li class="beccaklam"><span></span>Rebecca</li>
+					<li class="stephaniemcv"><span></span>Steph</li>
+				</ul>
+			</div>
+		</div>
 			
 		<hr>
 		</div>
@@ -96,6 +120,11 @@
 				visualize();
 			});
 		});	
+		$("#refresh-button").on("click", function () {
+         $.ajax('/trigger_refresh', {
+            success: function () { window.location.reload(); }
+         });
+      });
 	</script>
 </body>
 </html>
