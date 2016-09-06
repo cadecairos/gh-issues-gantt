@@ -87,7 +87,7 @@ h4 {
 #legend-2{
 	width: 260px;
 	position: fixed;
-	top: 77px;
+	top: 10px;
 	right: 30px; 
 	padding: 5px;
 	padding-bottom: 0px;
@@ -160,6 +160,15 @@ h4 {
 	font-family:"Proxima Nova",Helvetica,Arial,sans-serif !important;
 	font-size: 12px;
 	color: #fff;
+}
+
+#chart-canvas {
+	margin-top:50px;
+}
+
+#refresh-button-container {
+	margin-left:2.25rem;
+	padding-top:.9375rem;
 }
 
 .KevZawacki span, .KevZawacki .bar {background-color: #cfcfc4}

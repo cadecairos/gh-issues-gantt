@@ -7,7 +7,7 @@
 	var canvas_width = d3.select('#chart-canvas').node().offsetWidth;
 
 	var xScale = d3.time.scale()
-		.rangeRound([125, canvas_width]);
+		.rangeRound([165, canvas_width]);
 
 
 	var data = [];
@@ -46,26 +46,30 @@
 
 
 	function tidyData(issues) {
-
 		issues.forEach(function(d,i) {
 			if (d.milestone) {
 				var object = [];
 				object.id = i;
 				object.title = d.title;
-
-				if (d.assignee) {
-					object.assignee = d.assignee.login;	
+				object.assignee = [];
+				if (d.assignees.length > 0) {
+					d.assignees.forEach(function(d,i) {
+						object.assignee.push(d.login);
+					});
 				} else {
-					object.assignee = "unassigned";
+					object.assignee.push("unassigned");
 				}
 
 				object.milestone = d.milestone.title;
 				if (d.labels) {
+					object.label = [];
 					d.labels.forEach(function(d,i) {
 						if (d.name == "P1") {
 							object.priority = "P1";
 						} else if (d.name == "P2") {
 							object.priority = "P2";
+						} else {
+							object.label.push(d.name);
 						}
 					})
 				}
@@ -103,9 +107,16 @@
 			d3.select("#milestone").append('option').html(d.title);
 		})
 
+		$.getJSON("https://api.github.com/repos/MozillaFoundation/Advocacy/labels", function(data) {
+			data.forEach(function(d,i) {
+				d3.select("#label").append('option').html(d.name);
+			})
+		});
+
 		data.sort(function(a,b) {
 			return a.due_on - b.due_on;
 		})
+
 
 		// Find min/max of our dates
 		var min = d3.min(data, function(d) { return d.created_at});
@@ -186,7 +197,7 @@
 			.attr('class', 'todaymarker')
 			.style('position', 'absolute')
 			// height of "today" slightly higher so as not to interfere with milestones
-			.style('top', '-68px')
+			.style('top', '-50px')
 			.style('left', function(d) { return (xScale(d) -1) + 'px' });
 
 	}
@@ -200,6 +211,24 @@
 		if (filter_selector) {
 			if (filter_selector[1] == "All") {
 				filteredData = data.filter(function(d) { return d});
+			} else if (filter_selector[0] == "label" ) {
+				filteredData = data.filter(function(d) {
+					if (d.label) { 
+						var arr = d.label.indexOf(filter_selector[1]);
+						if (arr > -1) {
+							return d;
+						}
+					}
+				});
+			} else if (filter_selector[0] == "assignee" ) {
+				filteredData = data.filter(function(d) {
+					if (d.assignee) { 
+						var arr = d.assignee.indexOf(filter_selector[1]);
+						if (arr > -1) {
+							return d;
+						}
+					}
+				});
 			} else {
 				filteredData = data.filter(function(d) { return d[filter_selector[0]] == filter_selector[1]});	
 			}

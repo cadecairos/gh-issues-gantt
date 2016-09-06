@@ -12,61 +12,69 @@
 <body>
 
 	<!-- TITLE BAR -->
-	<header class="large-6 columns hide-for-small-only">
-				<h1>Mozilla Advocacy</h1>
+	<header class="large-12 columns hide-for-small-only">
+		<h1>Mozilla Advocacy</h1>
 	</header>
-      <div id='refresh-button-container'>
-        <button id="refresh-button" class='button hollow'>Refresh</button>
+			<div id='refresh-button-container' class="button-group">
+        	<button id="refresh-button" class='button tiny hollow secondary'>Refresh</button>
+		</div>
+	<div class="row">
+		<!-- SORTER/FILTER/COLOR BUTTONS -->
+		<div class="button-block small-6 columns">
+			<h6>SORT BY</h6>
+			<ul id="sorter" class="button-group radius">
+				<li class="hollow secondary button tiny" data-sorter="title">Issue</li>
+				<li class="hollow secondary button tiny" data-sorter="created_at">Start date</li>
+				<li class="hollow secondary button tiny" data-sorter="due_on">Due date</li>
+				<li class="hollow secondary button tiny" data-sorter="team">Team</li>
+			</ul>
+		</div>
+		<div class="button-block small-6 columns">
+			<h6>FILTER BY PRIORITY</h6>
+			<ul id="priority" class="button-group radius filter">
+				<li class="hollow secondary button tiny" data-filter="All">All</li>
+				<li class="hollow secondary button tiny" data-filter="P1">P1</li>
+				<li class="hollow secondary button tiny" data-filter="P2">P2</li>
+			</ul>
+		</div>
 	</div>
 
-			<div id='msg' class="alert alert-block"></div>
-		
-			<hr>
-			<!-- SORTER/FILTER/COLOR BUTTONS -->
-			<div class="button-block large-5 columns">
-				<h6>SORT BY</h6>
-				<ul id="sorter" class="button-group radius">
-					<li class="hollow secondary button tiny" data-sorter="title">Issue</li>
-					<li class="hollow secondary button tiny" data-sorter="created_at">Start date</li>
-					<li class="hollow secondary button tiny" data-sorter="due_on">Due date</li>
-					<li class="hollow secondary button tiny" data-sorter="team">Team</li>
-				</ul>
-			</div>
-			<div class="button-block large-5 columns">
-				<h6>FILTER BY PRIORITY</h6>
-				<ul id="priority" class="button-group radius filter">
-					<li class="hollow secondary button tiny" data-filter="All">All</li>
-					<li class="hollow secondary button tiny" data-filter="P1">P1</li>
-					<li class="hollow secondary button tiny" data-filter="P2">P2</li>
-				</ul>
-			</div>
-
-			<div class="button-block large-9 columns">
-				<h6>FILTER BY</h6>
-				<h7>Team</h7>
-				<select id="assignee" class="filter"> 
-					<option selected>All</option>
-					<option>KevZawacki</option>
-					<option>valianttry</option>
-					<option>damiankay</option>
-					<option>cadecairos</option>
-					<option>shaghdoosti</option>
-					<option>brettgaylor</option>
-					<option>lovegushwa</option>
-					<option>vojtechmozilla</option>
-					<option>HPaulJohnson</option>
-					<option>ScottDowne</option>
-					<option>natalieworth</option>
-					<option>beccaklam</option>
-					<option>stephaniemcv</option>
-				</select>
-				
-				<h7>Milestone</h7><select id="milestone" class="filter">
-				<option>All</option>
-				</select>
-
-			</div>
-			<!-- LEGEND - TEAM -->
+	<div class="row">
+		<div class="large-12 columns">
+			<h6>FILTER BY</h6>
+		</div>
+		<div class="button-block large-4 columns">
+			
+			<h7>Assignee</h7>
+			<select id="assignee" class="filter"> 
+				<option selected>All</option>
+				<option>KevZawacki</option>
+				<option>valianttry</option>
+				<option>damiankay</option>
+				<option>cadecairos</option>
+				<option>shaghdoosti</option>
+				<option>brettgaylor</option>
+				<option>lovegushwa</option>
+				<option>vojtechmozilla</option>
+				<option>HPaulJohnson</option>
+				<option>ScottDowne</option>
+				<option>natalieworth</option>
+				<option>beccaklam</option>
+				<option>stephaniemcv</option>
+			</select>
+		</div>
+		<div class="button-block large-4 columns">	
+			<h7>Milestone</h7><select id="milestone" class="filter">
+			<option>All</option>
+			</select>
+		</div>
+		<div class="button-block large-4 columns">
+			<h7>Label</h7><select id="label" class="filter">
+			<option>All</option>
+			</select>
+		</div>
+	</div>
+				<!-- LEGEND - TEAM -->
 		<div id="legend-2" class="legend-style">
 		<div class="legend-title">Team</div>
 			<div class="legend-scale">
@@ -88,19 +96,17 @@
 			</div>
 		</div>
 			
-		<hr>
+
 		</div>
-		<div class="row">
-			<div class="large-12 columns">
-				<div id="chart-canvas" style="position:relative">
-					<div id="svg-canvas"></div>
-					<div id="gantt-bar-container"></div>
-				</div>
-
-				<!-- TOOLTIPS -->
-				<div id="tooltip"></div>
-
+		<div class="large-12 columns">
+			<div id="chart-canvas" style="position:relative">
+				<div id="svg-canvas"></div>
+				<div id="gantt-bar-container"></div>
 			</div>
+
+			<!-- TOOLTIPS -->
+			<div id="tooltip"></div>
+
 		</div>
 
     
@@ -119,6 +125,7 @@
 				window.milestones = data.milestones;
 				visualize();
 			});
+			
 		});	
 		$("#refresh-button").on("click", function () {
          $.ajax('/trigger_refresh', {
