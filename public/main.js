@@ -75,7 +75,7 @@
 				}
 				object.url = 'https://github.com/MozillaFoundation/Advocacy/issues/'+d.number;
 				
-				
+				console.log(object);
 				var bda = d.body.split('*').forEach(function(d,i) {
 					var bdaS = d.split(':');
 					bdaS.forEach(function(d,i) {
@@ -84,6 +84,7 @@
 							object.created_at = milestonesDateFormat.parse(start_temp);
 						}
 						if (d == "Due date") {
+							console.log(bdaS);
 							var end_temp = bdaS[i+1].trim();
 							object.due_on = milestonesDateFormat.parse(end_temp);
 						}
