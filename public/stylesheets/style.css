@@ -171,6 +171,11 @@ h4 {
 	padding-top:.9375rem;
 }
 
+#errors {
+	background:rgba(255,0,0,0.1);
+	border:1px solid rgba(255,0,0,0.4);
+}
+
 .KevZawacki span, .KevZawacki .bar {background-color: #cfcfc4}
 .valianttry span, .valianttry .bar {background-color: #cb99c9}
 .damiankay span, .damiankay .bar {background-color: #dea5a4}

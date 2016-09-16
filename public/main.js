@@ -11,6 +11,7 @@
 
 
 	var data = [];
+	var errors = [];
 
 	var number_of_bars, canvas_height;
 
@@ -80,22 +81,38 @@
 					bdaS.forEach(function(d,i) {
 						if (d == "Start date") {
 							var start_temp = bdaS[i+1].trim();
-							object.created_at = milestonesDateFormat.parse(start_temp);
+							try {
+								object.created_at = milestonesDateFormat.parse(start_temp);
+							} catch(err) {
+								errors.push(object.url);
+							}
 						}
 						if (d == "Due date") {
 							var end_temp = bdaS[i+1].trim();
-							object.due_on = milestonesDateFormat.parse(end_temp);
+							try {
+								object.due_on = milestonesDateFormat.parse(end_temp);
+							} catch(err) {
+								errors.push(object.url);
+							}
 						}
 					});			
 					
 				});
 
 				if (object.created_at == null) {
-					object.created_at = dateFormat.parse(d.created_at);					
+					try { 
+						object.created_at = dateFormat.parse(d.created_at);					
+					} catch(err) {
+						errors.push(object.url);
+					}
 				}
 
-				if (object.due_on == null && d.milestone.due_on !== null) {
-					object.due_on = dateFormat.parse(d.milestone.due_on);
+				if (object.due_on == null  && d.milestone.due_on !== null) {
+					try {
+						object.due_on = dateFormat.parse(d.milestone.due_on);
+					} catch(err) {
+						errors.push(object.url);
+					}
 				}
 				if (object.due_on !== null) {
 					data.push(object);	
@@ -103,6 +120,13 @@
 				
 			}
 		})
+		if (errors.length > 0) {
+			errors.forEach(function(d,i) {
+				d3.select("#errors")
+					.style('display','block')
+					.append("p").html("Check <a href="+d+">"+d+"</a> for errors.");
+			});
+		}
 
 		milestones.forEach(function(d,i) {
 			d3.select("#milestone").append('option').html(d.title);
