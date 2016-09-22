@@ -176,6 +176,13 @@ h4 {
 	border:1px solid rgba(255,0,0,0.4);
 }
 
+svg {
+	overflow:scroll !important;
+}
+
+.active {background:#9ebcda !important;color:#fff !important;}
+.button-group .button:not(:last-child) {border-right:0px !important;}
+
 .KevZawacki span, .KevZawacki .bar {background-color: #cfcfc4}
 .valianttry span, .valianttry .bar {background-color: #cb99c9}
 .damiankay span, .damiankay .bar {background-color: #dea5a4}

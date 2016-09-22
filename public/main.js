@@ -48,7 +48,7 @@
 
 	function tidyData(issues) {
 		issues.forEach(function(d,i) {
-			if (d.milestone) {
+			//if (d.milestone) {
 				var object = [];
 				object.id = i;
 				object.title = d.title;
@@ -60,8 +60,9 @@
 				} else {
 					object.assignee.push("unassigned");
 				}
-
-				object.milestone = d.milestone.title;
+				if (d.milestone) {
+					object.milestone = d.milestone.title;	
+				}
 				if (d.labels) {
 					object.label = [];
 					d.labels.forEach(function(d,i) {
@@ -81,6 +82,7 @@
 					bdaS.forEach(function(d,i) {
 						if (d == "Start date") {
 							var start_temp = bdaS[i+1].trim();
+							object.valid = true;
 							try {
 								object.created_at = milestonesDateFormat.parse(start_temp);
 							} catch(err) {
@@ -89,8 +91,11 @@
 						}
 						if (d == "Due date") {
 							var end_temp = bdaS[i+1].trim();
+							object.valid = true;
+							//console.log(typeof(bdaS[i+1]));
 							try {
 								object.due_on = milestonesDateFormat.parse(end_temp);
+								//console.log(typeof(object.due_on));
 							} catch(err) {
 								errors.push(object.url);
 							}
@@ -101,30 +106,36 @@
 
 				if (object.created_at == null) {
 					try { 
-						object.created_at = dateFormat.parse(d.created_at);					
+						object.created_at = dateFormat.parse(d.created_at);				
 					} catch(err) {
 						errors.push(object.url);
 					}
 				}
 
-				if (object.due_on == null  && d.milestone.due_on !== null) {
+				if (object.due_on == null  && d.milestone && d.milestone.due_on !== null) {
 					try {
 						object.due_on = dateFormat.parse(d.milestone.due_on);
 					} catch(err) {
 						errors.push(object.url);
 					}
 				}
-				if (object.due_on !== null) {
+				if (object.due_on && object.created_at) {
 					data.push(object);	
+				} else {
+					errors.push(object);
 				}
 				
-			}
+			//}
 		})
+		console.log(errors);
 		if (errors.length > 0) {
 			errors.forEach(function(d,i) {
-				d3.select("#errors")
-					.style('display','block')
-					.append("p").html("Check <a href="+d+">"+d+"</a> for errors.");
+				//d3.select("#errors")
+				//	.style('display','block')
+				//	.append("p").html("Check <a href="+d.url+">"+d.url+"</a> for errors.");
+				if (d.valid) {
+					console.log("Check <a href="+d.url+">"+d.url+"</a> for errors.");
+				}
 			});
 		}
 
@@ -162,7 +173,7 @@
 		// Create svg container
 		var svg = d3.select('#svg-canvas')
 			.append('svg')
-				.attr('width', canvas_width)
+				.attr('width', canvas_width+50)
 				.attr('height', canvas_height);
 
 		// Create base axis; assign scale made up above
@@ -183,16 +194,19 @@
 			.call(xAxis);
 
 		// Lines
-		var line = svg.append('g')
+		var monthlyLines = svg.append('g')
 			.selectAll('line')
-			.data(xScale.ticks(10))
+			.data(xScale.ticks(20))
 			.enter()
 			.append('line')
 				.attr('x1', xScale)
 				.attr('x2', xScale)
 				.attr('y1', 30)
-				.attr('y2', canvas_height - 25)
+				.attr('y2', canvas_height-25)
 				.style('stroke', '#ccc');
+
+
+
 
 		var todayline = svg.append('line')
 			.datum(today)
@@ -340,6 +354,8 @@
 
 	d3.selectAll('#sorter li')
 		.on('click', function() {
+		$(this).addClass('active');
+		$('#sorter li').not(this).removeClass('active');
 		// Set it to what it isn't, if it was true, make it false and vice versa
 		// When you click a button twice, it will flop its sort order; a simple toggle
 		sort_ascending = !sort_ascending;
@@ -361,16 +377,20 @@
 	d3.selectAll('.filter li').on('click', function() {
 		filter_selector = [];
 		filter_selector.push('priority');
-		filter_selector.push(d3.select(this).attr('data-filter'));
+		filter_selector.push($(this).attr('data-filter'));
 		console.log(filter_selector);
+		$(this).addClass('active');
+		$('.filter li').not(this).removeClass('active');
 		render();
 
 	});
 	d3.selectAll('.filter').on('change', function() {
 		filter_selector = [];
-		filter_selector.push(d3.select(this).attr('id'));
-		filter_selector.push(d3.select(this).node().value);
+		filter_selector.push($(this).attr('id'));
+		filter_selector.push($(this).node().value);
 		console.log(filter_selector);
+		$(this).addClass('active');
+		$('.filter').not(this).removeClass('active');
 		render();
 
 	});
