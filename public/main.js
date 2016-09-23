@@ -371,15 +371,17 @@
 		filter_selector.push($(this).attr('data-filter'));
 		$(this).addClass('active');
 		$('.filter li').not(this).removeClass('active');
+		$('.filter').not(this).removeClass('active');
 		render();
 
 	});
 	d3.selectAll('.filter').on('change', function() {
 		filter_selector = [];
 		filter_selector.push($(this).attr('id'));
-		filter_selector.push($(this).node().value);
+		filter_selector.push($(this).find('option:selected').text());
 		$(this).addClass('active');
 		$('.filter').not(this).removeClass('active');
+		$('.filter li').not(this).removeClass('active');
 		render();
 
 	});
