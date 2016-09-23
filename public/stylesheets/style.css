@@ -1,14 +1,203 @@
-// Personal styles
 
-body { font-family: Helvetica, Arial, sans-serif; font-size: 13px; padding: 0 0 50px 0; }
+html,body,h1,h2,h4,h6,li,a {
+	font-family: "Proxima Nova",Helvetica,Arial,sans-serif !important;
+}
+h4 {
+	float: left;
+	width: 200px;
+	text-align: right;
+	padding-right: 10px;
+}
 
-.contain { width: 1400px; margin: 0 auto;}
+.header{
+	margin-bottom: 20px;
+}
 
-.fn-gantt .leftPanel .fn-label, .fn-gantt .leftPanel .name { width: 190px; }
-.fn-gantt .leftPanel .desc { width: 195px; }
-.fn-gantt .leftPanel { width: 385px; }
+.button-block.last{
+	margin-bottom: 20px;
+}
 
-.fn-gantt .ganttYellow { background-color: #FEEA77; }
+.axis path,
+.axis line {
+	fill: none;
+	stroke: none;
+	shape-rendering: crispEdges;
+}
+.axis text {
+	font-family: sans-serif;
+	font-size: 11px;
+}
+.bar{
+	background-color:#9ebcda;
+	height: 20px;
+	line-height:1;
+	margin-bottom: 10px;
+	-webkit-transition: background-color .2s;
+}
+.bar-wrapper {
+	width: 100%;
+	position: absolute;
+}
+.bar-wrapper:hover .bar {
+	opacity: .75;
+	-moz-opacity: .75;
+	-webkit-opacity: .75;
+}
+.bar-wrapper:hover .bar-name {
+	text-decoration: underline;
 
-.fn-gantt .ganttPurple { background-color: #DCBFEE; }
-.fn-gantt .ganttPurple .fn-label { color: #4F1D6B; }
+}
+.bar-name {
+	font-size: 11px;
+	font-weight: 300;
+	position: absolute;
+	left: 0;
+	padding-top: 4px;
+	width: 160px;
+}
+.bar-name:hover {
+	cursor: default;
+}
+
+#svg-canvas {
+	position:absolute;
+	top:0;
+	bottom:0;
+	left:0;
+	right:0;
+}
+#gantt-bar-container {
+	position:absolute;
+	top:30px;
+	bottom:0;
+	left:0;
+	right:0;
+	padding-top:30px
+}
+#legend {
+	width: 320px;
+	position: fixed;
+	top: 10px;
+	right: 30px;
+	padding: 5px;
+	padding-bottom: 0px;
+	z-index:9999999;
+	background: rgba(250, 250, 250, .5);
+}
+#legend-2{
+	width: 260px;
+	position: fixed;
+	top: 10px;
+	right: 30px; 
+	padding: 5px;
+	padding-bottom: 0px;
+	z-index:9999999;
+	background: rgba(250, 250, 250, .5);
+}
+.legend-style .legend-title {
+	text-align:left;
+	margin-bottom: 3px;
+	font-family: "Proxima Nova",Helvetica,Arial,sans-serif !important;
+	font-weight: bold;
+	font-size: 90%;
+}
+.legend-style .legend-scale ul {
+	margin: 0;
+	padding: 0;
+	float: left;
+	list-style: none;
+} 
+.legend-style .legend-scale ul li {
+	display: block;
+	float: left;
+	width: 50px;
+	margin-bottom: 6px;
+	text-align: center;
+	font-size: 75%;
+	list-style: none;
+}
+.legend-style ul.legend-labels li span {
+	display: block;
+	float: left;
+	height: 15px;
+	width: 50px;
+}
+.legend-style a {
+	color: #777;
+}
+#tooltip {
+    display: none;
+    position: absolute;
+    margin: 125px 16px;
+    width: 200px;
+    padding: 10px;
+    background-color: white;
+    -webkit-border-radius: 10px;
+    -moz-border-radius: 10px;
+    border-radius: 10px;
+   	-webkit-box-shadow: 4px 4px 10px rgba(0, 0, 0, 0.4);
+    -moz-box-shadow: 4px 4px 10px rgba(0, 0, 0, 0.4);
+    box-shadow: 4px 4px 10px rgba(0, 0, 0, 0.4);
+    pointer-events: none;
+    z-index: 10;
+}
+#tooltip p {
+    margin: 0;
+    font-family: sans-serif;
+    font-size: 12px;
+    line-height: 16px;
+}
+.todaymarker {
+	background-color: #c00;
+	padding: 2px 6px;
+	font-family: "Proxima Nova",Helvetica,Arial,sans-serif !important;
+	font-size: 12px;
+	color: #fff;
+}
+.milestone {
+	background-color: #636363;
+	padding: 2px 6px;
+	font-family:"Proxima Nova",Helvetica,Arial,sans-serif !important;
+	font-size: 12px;
+	color: #fff;
+}
+
+#chart-canvas {
+	margin-top:50px;
+}
+
+#refresh-button-container {
+	margin-left:2.25rem;
+	padding-top:.9375rem;
+}
+
+#errors {
+	background:rgba(255,0,0,0.1);
+	border:1px solid rgba(255,0,0,0.4);
+}
+
+svg {
+	overflow:scroll !important;
+}
+
+.heading {
+	font-weight:bold;
+}
+
+.active {background:#9ebcda !important;color:#fff !important;}
+.button-group .button:not(:last-child) {border-right:0px !important;}
+
+.KevZawacki span, .KevZawacki .bar {background-color: #cfcfc4}
+.valianttry span, .valianttry .bar {background-color: #cb99c9}
+.damiankay span, .damiankay .bar {background-color: #dea5a4}
+.cadecairos span, .cadecairos .bar {background-color: #aec6cf}
+.shaghdoosti span, .shaghdoosti .bar {background-color: #ffb347}
+.brettgaylor span, .brettgaylor .bar {background-color: #fdfd96}
+.lovegushwa span, .lovegushwa .bar {background-color: #779ecb}
+.vojtechmzl span, .vojtechmzl .bar {background-color: #836953}
+.HPaulJohnson span, .HPaulJohnson .bar {background-color: #ff6961}
+.ScottDowne span, .ScottDowne .bar {background-color: #b19cd9}
+.natalieworth span, .natalieworth .bar {background-color: #77DD77}
+.beccaklam span, .beccaklam .bar {background-color: #98d2eb}
+.stephaniemcv span, .stephaniemcv .bar {background-color: #c23b22}
+
