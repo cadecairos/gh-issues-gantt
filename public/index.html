@@ -12,18 +12,18 @@
 <body>
 
 	<!-- TITLE BAR -->
-	<header class="large-12 columns hide-for-small-only">
+	<header class="large-12 columns">
 		<h1>Mozilla Advocacy</h1>
 	</header>
 			<div id='refresh-button-container' class="button-group">
         	<button id="refresh-button" class='button tiny hollow secondary'>Refresh</button>
 		</div>
-	<div class="row">
-		<div class="large-12 columns" id="errors" style="display:none;">
+
+		<div class="large-10 columns" id="errors" style="display:none;">
 		</div>
-	<div class="row">
+	<div class="columns large-10">
 		<!-- SORTER/FILTER/COLOR BUTTONS -->
-		<div class="button-block small-6 columns">
+		<div class="button-block small-12 large-5 columns" style="margin-left:0px">
 			<h6>SORT BY</h6>
 			<ul id="sorter" class="button-group radius">
 				<li class="hollow secondary button tiny" data-sorter="title">Issue</li>
@@ -32,7 +32,7 @@
 				<li class="hollow secondary button tiny" data-sorter="team">Team</li>
 			</ul>
 		</div>
-		<div class="button-block small-6 columns">
+		<div class="button-block small-12 large-5 columns" style="margin-left:0px">
 			<h6>FILTER BY PRIORITY</h6>
 			<ul id="priority" class="button-group radius filter">
 				<li class="hollow secondary button tiny" data-filter="All">All</li>
@@ -42,10 +42,9 @@
 		</div>
 	</div>
 
-	<div class="row">
-		<div class="large-12 columns">
+	<div class="large-10 columns">
 			<h6>FILTER BY</h6>
-		</div>
+
 		<div class="button-block large-4 columns">
 			
 			<h7>Assignee</h7>
@@ -76,7 +75,8 @@
 			<option>All</option>
 			</select>
 		</div>
-	</div>
+	</div>	
+
 				<!-- LEGEND - TEAM -->
 		<div id="legend-2" class="legend-style">
 		<div class="legend-title">Team</div>
@@ -89,7 +89,7 @@
 					<li class="shaghdoosti"><span></span>Sara</li>
 					<li class="brettgaylor"><span></span>Brett</li>
 					<li class="lovegushwa"><span></span>Jordan</li>
-					<li class="vojtechmzl"><span></span>Vojtech</li>
+					<li class="vojtechmozilla"><span></span>Vojtech</li>
 					<li class="HPaulJohnson"><span></span>Paul</li>
 					<li class="ScottDowne"><span></span>Scott</li>
 					<li class="natalieworth"><span></span>Natalie</li>
@@ -126,6 +126,7 @@
 			$.getJSON("/data.json", function(data) {
 				window.issues = data.issues;
 				window.milestones = data.milestones;
+				window.events = data.events;
 				visualize();
 			});
 			

@@ -44,95 +44,86 @@
 		render();
 	}
 
-
-
 	function tidyData(issues) {
 		issues.forEach(function(d,i) {
-			//if (d.milestone) {
-				var object = [];
-				object.id = i;
-				object.title = d.title;
-				object.assignee = [];
-				if (d.assignees.length > 0) {
-					d.assignees.forEach(function(d,i) {
-						object.assignee.push(d.login);
-					});
-				} else {
-					object.assignee.push("unassigned");
-				}
-				if (d.milestone) {
-					object.milestone = d.milestone.title;	
-				}
-				if (d.labels) {
-					object.label = [];
-					d.labels.forEach(function(d,i) {
-						if (d.name == "P1") {
-							object.priority = "P1";
-						} else if (d.name == "P2") {
-							object.priority = "P2";
-						} else {
-							object.label.push(d.name);
-						}
-					})
-				}
-				object.url = 'https://github.com/MozillaFoundation/Advocacy/issues/'+d.number;
-				
-				var bda = d.body.split('*').forEach(function(d,i) {
-					var bdaS = d.split(':');
-					bdaS.forEach(function(d,i) {
-						if (d == "Start date") {
-							var start_temp = bdaS[i+1].trim();
-							object.valid = true;
-							try {
-								object.created_at = milestonesDateFormat.parse(start_temp);
-							} catch(err) {
-								errors.push(object.url);
-							}
-						}
-						if (d == "Due date") {
-							var end_temp = bdaS[i+1].trim();
-							object.valid = true;
-							//console.log(typeof(bdaS[i+1]));
-							try {
-								object.due_on = milestonesDateFormat.parse(end_temp);
-								//console.log(typeof(object.due_on));
-							} catch(err) {
-								errors.push(object.url);
-							}
-						}
-					});			
-					
+			var object = [];
+			object.id = i;
+			object.title = d.title;
+			object.assignee = [];
+			if (d.assignees.length > 0) {
+				d.assignees.forEach(function(d,i) {
+					object.assignee.push(d.login);
 				});
-
-				if (object.created_at == null) {
-					try { 
-						object.created_at = dateFormat.parse(d.created_at);				
-					} catch(err) {
-						errors.push(object.url);
+			} else {
+				object.assignee.push("unassigned");
+			}
+			if (d.milestone) {
+				object.milestone = d.milestone.title;	
+			}
+			if (d.labels) {
+				object.label = [];
+				d.labels.forEach(function(d,i) {
+					if (d.name == "P1") {
+						object.priority = "P1";
+					} else if (d.name == "P2") {
+						object.priority = "P2";
+					} else {
+						object.label.push(d.name);
 					}
-				}
-
-				if (object.due_on == null  && d.milestone && d.milestone.due_on !== null) {
-					try {
-						object.due_on = dateFormat.parse(d.milestone.due_on);
-					} catch(err) {
-						errors.push(object.url);
+				})
+			}
+			object.url = 'https://github.com/MozillaFoundation/Advocacy/issues/'+d.number;
+			
+			var bda = d.body.split('*').forEach(function(d,i) {
+				var bdaS = d.split(':');
+				bdaS.forEach(function(d,i) {
+					if (d == "Start date") {
+						var start_temp = bdaS[i+1].trim();
+						object.valid = true;
+						try {
+							object.created_at = milestonesDateFormat.parse(start_temp);
+						} catch(err) {
+							errors.push(object.url);
+						}
 					}
-				}
-				if (object.due_on && object.created_at) {
-					data.push(object);	
-				} else {
-					errors.push(object);
-				}
+					if (d == "Due date") {
+						var end_temp = bdaS[i+1].trim();
+						object.valid = true;
+						try {
+							object.due_on = milestonesDateFormat.parse(end_temp);
+						} catch(err) {
+							errors.push(object.url);
+						}
+					}
+				});			
 				
-			//}
+			});
+
+			if (object.created_at == null) {
+				try { 
+					object.created_at = dateFormat.parse(d.created_at);				
+				} catch(err) {
+					errors.push(object.url);
+				}
+			}
+
+			if (object.due_on == null  && d.milestone && d.milestone.due_on !== null) {
+				try {
+					object.due_on = dateFormat.parse(d.milestone.due_on);
+				} catch(err) {
+					errors.push(object.url);
+				}
+			}
+			if (object.due_on && object.created_at) {
+				data.push(object);	
+			} else {
+				errors.push(object);
+			}
+				
 		})
-		console.log(errors);
+
 		if (errors.length > 0) {
 			errors.forEach(function(d,i) {
-				//d3.select("#errors")
-				//	.style('display','block')
-				//	.append("p").html("Check <a href="+d.url+">"+d.url+"</a> for errors.");
 				if (d.valid) {
 					console.log("Check <a href="+d.url+">"+d.url+"</a> for errors.");
 				}
@@ -140,12 +131,12 @@
 		}
 
 		milestones.forEach(function(d,i) {
-			d3.select("#milestone").append('option').html(d.title);
+			d3.select("#milestone").append('option').text(d.title);
 		})
 
 		$.getJSON("https://api.github.com/repos/MozillaFoundation/Advocacy/labels", function(data) {
 			data.forEach(function(d,i) {
-				d3.select("#label").append('option').html(d.name);
+				d3.select("#label").append('option').text(d.name);
 			})
 		});
 
@@ -210,7 +201,6 @@
 
 		var todayline = svg.append('line')
 			.datum(today)
-			// .datum(new Date(2014,1,14))
 			.attr('x1', xScale)
 			.attr('x2', xScale)
 			.attr('y1', 0)
@@ -281,21 +271,23 @@
 			.append('div')
 			.attr('class', function(d) { return 'bar-wrapper '+ d.assignee})
 			.on('mouseover', function(d, i) {
-				var tt = '';
-				tt += '<p class="heading"><span id="keyword"><b>' + d.title+ '</b></span></p>';
-				tt += '<p class="indent"><span id="bar-data">' + d.assignee + '</span></p>';
-				//tt += '<p class="indent"><span id="bar-data">' + d.priority + " hours" + '</span></p>';
-				//tt += '<p class="indent"><span id="cpcVal">' + dateFormat(d["created_at"]) + ' - ' + dateFormat(d["milestone"]["due_on"]) + '</span></p>';
-				tt += '<p class="indent"><span id="cpcVal">' + 'Start date: ' + titleFormat(d.created_at) + '</span></p>';
-				tt += '<p class="indent"><span id="cpcVal">' + 'Due date: ' + titleFormat(d.due_on) + '</span></p>';
-
-				tooltip
-					//.style('border-left', '3px solid ' + teamColorScale(d.team))
-					.html(tt);
+				tooltip.append('p')
+					.attr('class','heading')
+					.text(d.title);
+				tooltip.append('p')
+					.attr('class','indent')
+					.text(d.assignee);
+				tooltip.append('p')
+					.attr('class','indent')
+					.text('Start date: '+ titleFormat(d.created_at));
+				tooltip.append('p')
+					.attr('class','indent')
+					.text('Due date: '+ titleFormat(d.due_on));
 
 				tooltip.style('display', 'block');
 			})
 			.on('mouseout', function(d, i) {
+				$("#tooltip").empty();
 				tooltip.style('display', 'none');
 			})
 			.on('click', function(d, i) {
@@ -360,7 +352,6 @@
 		// When you click a button twice, it will flop its sort order; a simple toggle
 		sort_ascending = !sort_ascending;
 		var sorter_selector = d3.select(this).attr('data-sorter');
-		console.log('SORT:', sorter_selector);
 
 		data.sort(function(a, b) {
 			if (sort_ascending) {
@@ -378,7 +369,6 @@
 		filter_selector = [];
 		filter_selector.push('priority');
 		filter_selector.push($(this).attr('data-filter'));
-		console.log(filter_selector);
 		$(this).addClass('active');
 		$('.filter li').not(this).removeClass('active');
 		render();
@@ -388,7 +378,6 @@
 		filter_selector = [];
 		filter_selector.push($(this).attr('id'));
 		filter_selector.push($(this).node().value);
-		console.log(filter_selector);
 		$(this).addClass('active');
 		$('.filter').not(this).removeClass('active');
 		render();

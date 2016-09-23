@@ -180,6 +180,10 @@ svg {
 	overflow:scroll !important;
 }
 
+.heading {
+	font-weight:bold;
+}
+
 .active {background:#9ebcda !important;color:#fff !important;}
 .button-group .button:not(:last-child) {border-right:0px !important;}
 
